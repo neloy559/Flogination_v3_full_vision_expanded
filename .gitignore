@@ -1,0 +1,36 @@
+# IDE & editor
+/.kiro
+/.vscode
+
+# Build artifacts — never commit these
+/FLogination - The Session Manager/dist/
+/FLogination - The Session Manager/dist-electron/
+/Flogination/flogination-web/.next/
+
+# Dependencies — always reinstallable
+/FLogination - The Session Manager/node_modules/
+/Flogination/flogination-web/node_modules/
+node_modules/
+
+# Database & user data
+/FLogination - The Session Manager/flogination.db
+/FLogination - The Session Manager/backups/*.db
+
+# Sensitive environment files
+/FLogination - The Session Manager/.env
+
+# Large binary/exe files
+/centbrowser_5.2.1168.83_x64_portable.exe
+/MetaMax_FULL.exe
+
+# Temp design folders
+/Flogination
+/stitch_flogination_dashboard_ui
+/stitch_flogination_dashboard_ui.zip
+
+# Test artifacts
+/FLogination - The Session Manager/test-screenshots/
+/FLogination - The Session Manager/test-report.md
+
+# GitNexus index (local only)
+/.gitnexus/parse-cache/
