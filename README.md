@@ -8,17 +8,39 @@ Flogination manages 1,000+ Facebook accounts simultaneously — with stealth bro
 
 ## What it does
 
-| Capability | Detail |
-|---|---|
-| **Session Management** | Cookie-based Facebook account management with full profile metadata |
-| **Stealth Browser** | Playwright + Chromium with CDP patching, Bézier mouse movement, WebRTC blocking, fingerprint injection |
-| **Health Monitoring** | Real-time status tracking — `live`, `checkpoint`, `restricted`, `dead` |
-| **Window Grid** | Tiled grid view (default 3×4) for mass visual monitoring |
-| **Hibernation** | Suspends idle browser contexts to conserve RAM; wakes on demand |
-| **AI Gateway** | LLM integration (OpenRouter, DeepSeek, OpenAI, GLM) for human-like interactions |
-| **Agent Bridge** | Secondary Express API for external remote control by scripts or AI agents |
-| **Inbox / CRM** | Message monitoring, contact management, and warm-up engine |
-| **Campaigns** | Automated action sequences across sessions |
+Managing Facebook accounts at scale is not a browser automation problem — it's a detection evasion problem. Facebook runs one of the most aggressive bot-detection systems on the web, combining browser fingerprinting, behavioral analysis, mouse heuristics, WebRTC leak detection, and network-level signals. Flogination is built around that constraint.
+
+### Session Management
+Stores and manages Facebook sessions by cookie rather than credentials. Each session carries full profile metadata — BM count, ad accounts, owned pages, groups, health status, and scraping state. Supports 1,000+ accounts in a single SQLite database with WAL mode for concurrent read/write during mass operations.
+
+### Stealth Browser
+The single most important component. Playwright launches Chromium but the vanilla browser is trivially detectable. Flogination patches it at the CDP (Chrome DevTools Protocol) layer to:
+- Spoof `navigator.webdriver` and automation-related JS properties
+- Inject randomized canvas, WebGL, and audio fingerprints per session
+- Replace linear mouse movement with Bézier curves that mimic human hand tremor
+- Block WebRTC to prevent IP leaks through the browser even when a proxy is assigned
+- Set per-session user-agent, viewport, timezone, and language to match the account's declared country
+
+### Health Monitoring
+Facebook marks accounts as `checkpoint` (identity verification required), `restricted` (limited posting/messaging), or `dead` (disabled). Flogination detects these states in real time by reading DOM indicators during automated browsing, not by making separate API calls — which would themselves be detectable.
+
+### Window Grid
+Renders all active browser windows in a tiled 3×4 grid inside the Electron shell. At scale, you need visual confirmation that sessions are alive and not stuck on checkpoint screens. The grid makes that possible without switching between windows.
+
+### Hibernation
+Each active Playwright browser context consumes ~150–300 MB of RAM. Running 50 sessions simultaneously without hibernation requires 8–15 GB of memory. Hibernation suspends idle browser contexts to disk-like state and wakes them on demand, letting a single machine manage hundreds of sessions within a normal memory budget.
+
+### AI Gateway
+Integrates with OpenRouter, DeepSeek, OpenAI, and GLM through a unified OpenAI-compatible interface. Used to generate human-like message responses, post comments, and decide next actions — all with provider fallback so a single model outage doesn't stop operations.
+
+### Agent Bridge
+A secondary Express API running on its own port. Lets external scripts, n8n workflows, or other AI agents control Flogination programmatically — trigger health checks, queue BM creation, read logs — without touching the main dashboard. All endpoints require an API key.
+
+### Inbox / CRM
+Monitors Facebook Messenger across all active sessions simultaneously. Messages are surfaced in a unified inbox with contact tagging, interaction history, and a warm-up engine that builds account trust scores by maintaining consistent low-volume conversation patterns — a key factor in avoiding restrictions on new accounts.
+
+### Campaigns
+Defines reusable action sequences (comment, post, join group, etc.) and distributes them across a pool of sessions with configurable concurrency and delay. Tracks per-task status so partial failures can be retried without re-running the whole campaign.
 
 ---
 
