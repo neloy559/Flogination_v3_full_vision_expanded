@@ -130,11 +130,41 @@ app.get('/api/settings', (_req, res) => {
 });
 
 app.post('/api/settings', asyncRoute(async (req, res) => {
-  const newSettings = req.body;
-  db_.saveSettings(newSettings);
+  const body = req.body;
+
+  // Validate the shape before saving — this controls auth config,
+  // so we must not allow arbitrary overwrites.
+  if (typeof body !== 'object' || body === null) {
+    return res.status(400).json({ success: false, error: 'Invalid settings payload' });
+  }
+
+  // Fetch current settings and do a shallow merge so unknown keys are stripped.
+  const current = db_.getSettings();
+  const merged = {
+    ...current,
+    // Only allow known top-level keys
+    ...(body.ai !== undefined && typeof body.ai === 'object' ? {
+      ai: { ...current.ai, ...body.ai },
+    } : {}),
+    ...(body.agentBridge !== undefined && typeof body.agentBridge === 'object' ? {
+      agentBridge: { ...current.agentBridge, ...body.agentBridge },
+    } : {}),
+    ...(body.stealthMode !== undefined ? { stealthMode: Boolean(body.stealthMode) } : {}),
+    ...(body.gridLayout !== undefined && typeof body.gridLayout === 'object' ? { gridLayout: body.gridLayout } : {}),
+    ...(body.memoryCapMb !== undefined ? { memoryCapMb: Number(body.memoryCapMb) } : {}),
+    ...(body.hibernationEnabled !== undefined ? { hibernationEnabled: Boolean(body.hibernationEnabled) } : {}),
+    ...(body.webRTCBlocked !== undefined ? { webRTCBlocked: Boolean(body.webRTCBlocked) } : {}),
+    ...(body.mongoUri !== undefined ? { mongoUri: String(body.mongoUri) } : {}),
+    ...(body.n8nBaseUrl !== undefined ? { n8nBaseUrl: String(body.n8nBaseUrl) } : {}),
+    ...(body.proxyKillSwitch !== undefined ? { proxyKillSwitch: Boolean(body.proxyKillSwitch) } : {}),
+    ...(body.maxScrapeParallel !== undefined ? { maxScrapeParallel: Number(body.maxScrapeParallel) } : {}),
+    ...(body.inboxPollIntervalMs !== undefined ? { inboxPollIntervalMs: Number(body.inboxPollIntervalMs) } : {}),
+  };
+
+  db_.saveSettings(merged);
 
   // Reconnect MongoDB if URI changed
-  if (newSettings.mongoUri !== undefined) {
+  if (body.mongoUri !== undefined) {
     await mongoClient.connect();
   }
 
@@ -347,16 +377,35 @@ app.post('/api/sessions/bulk-import', strictLimiter, upload.single('file'), asyn
 }));
 
 app.patch('/api/sessions/:id', asyncRoute(async (req, res) => {
+  // Allowlist: only these fields are permitted via the API.
+  // This prevents arbitrary column injection into the DB update.
+  const ALLOWED_FIELDS = new Set([
+    'fbName', 'profileUrl', 'password', 'twoFactorSecret',
+    'country', 'phoneNumber', 'email', 'dateOfBirth', 'gender', 'creationDate',
+    'bmCount', 'bmRoles', 'bmRestrictionStatus', 'ownedPages', 'pagesFollowingCount',
+    'groupsJoinedCount', 'groupRoles', 'bmData', 'ownedPagesData', 'joinedGroupsData',
+    'adAccountId', 'currency', 'timezone', 'spendingLimit', 'currentThreshold',
+    'accountBalance', 'totalSpent', 'billingDate', 'paymentMethod',
+    'friendsCount', 'professionalMode', 'monetizationStatus',
+    'healthStatus', 'scrapingStatus', 'proxyId', 'lastCheck',
+  ]);
+
+  const unknown = Object.keys(req.body).filter((k) => !ALLOWED_FIELDS.has(k));
+  if (unknown.length > 0) {
+    return res.status(400).json({ success: false, error: `Unknown fields: ${unknown.join(', ')}` });
+  }
+
+  // Type-check healthStatus if present
+  const VALID_HEALTH = new Set(['live', 'checkpoint', 'restricted', 'dead']);
+  if (req.body.healthStatus !== undefined && !VALID_HEALTH.has(req.body.healthStatus)) {
+    return res.status(400).json({ success: false, error: `Invalid healthStatus: ${req.body.healthStatus}` });
+  }
+
   const updated = db_.updateSession(req.params.id, req.body);
   if (!updated) return res.status(404).json({ success: false, error: 'Session not found' });
 
-  // If proxy changed, update country to match proxy country
-  if (req.body.proxyId !== undefined) {
-    const proxy = db_.getProxies().find((p) => p.id === req.body.proxyId);
-    if (proxy) {
-      db_.updateSession(req.params.id, { country: proxy.country });
-    }
-  }
+  // Double-update for proxyId now handled inside db_.updateSession (country lock).
+  // No need to call updateSession again here.
 
   res.json({ success: true, session: updated });
 }));

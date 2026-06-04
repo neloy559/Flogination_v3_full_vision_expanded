@@ -19,28 +19,31 @@ const createAgentBridge = (settings: AgentBridgeSettings) => {
   app.use(bodyParser.json());
   
   const authenticate = (req: AgentRequest, res: Response, next: NextFunction) => {
+    // Agent Bridge auth is always enforced per-route.
+    // If the bridge is enabled but no API key is configured, reject all requests.
+    if (!settings.apiKey) {
+      return res.status(503).json({ error: 'Agent Bridge API key not configured' });
+    }
     const apiKey = req.headers['x-agent-key'] || req.headers['authorization']?.replace('Bearer ', '');
-    
     if (!apiKey || apiKey !== settings.apiKey) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    
     req.agentAuth = true;
     next();
   };
-  
-  if (settings.enabled) {
-    app.use(authenticate);
-  }
-  
+
+  // /health is intentionally public — allows uptime checks without credentials.
   app.get('/health', (req: Request, res: Response) => {
-    res.json({ 
-      status: 'ok', 
+    res.json({
+      status: 'ok',
       timestamp: Date.now(),
       version: '5.0.0',
-      agentBridgeEnabled: settings.enabled 
+      agentBridgeEnabled: settings.enabled,
     });
   });
+
+  // All other routes require authentication.
+  app.use(authenticate);
   
   app.get('/sessions', (req: Request, res: Response) => {
     const sessions = db_.getSessions();

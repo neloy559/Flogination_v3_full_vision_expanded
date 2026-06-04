@@ -480,9 +480,19 @@ function updateSession(
 
   const updated: Session = { ...session, ...resolvedUpdates, updatedAt: Date.now() };
 
-  // Exclude runtime-only fields and immutable fields from the UPDATE
-  const excluded = new Set(['id', 'createdAt', 'state', 'isRunning', 'warmUpScore']);
-  const fields = Object.keys(resolvedUpdates).filter((k) => !excluded.has(k));
+  // Allowlist of valid session columns — prevents SQL injection via arbitrary field names.
+  // Any key not in this set is silently dropped before the UPDATE is built.
+  const SESSION_COLUMNS = new Set([
+    'uid', 'fbName', 'profileUrl', 'password', 'cookie', 'twoFactorSecret',
+    'country', 'phoneNumber', 'email', 'dateOfBirth', 'gender', 'creationDate',
+    'bmCount', 'bmRoles', 'bmRestrictionStatus', 'ownedPages', 'pagesFollowingCount',
+    'groupsJoinedCount', 'groupRoles', 'bmData', 'ownedPagesData', 'joinedGroupsData',
+    'adAccountId', 'currency', 'timezone', 'spendingLimit', 'currentThreshold',
+    'accountBalance', 'totalSpent', 'billingDate', 'paymentMethod',
+    'friendsCount', 'professionalMode', 'monetizationStatus',
+    'healthStatus', 'scrapingStatus', 'scrapedAt', 'proxyId', 'lastCheck',
+  ]);
+  const fields = Object.keys(resolvedUpdates).filter((k) => SESSION_COLUMNS.has(k));
 
   if (fields.length === 0) return updated;
 
@@ -652,7 +662,8 @@ function updateProxy(id: string, updates: Partial<Omit<Proxy, 'id' | 'createdAt'
   if (!existing) return undefined;
 
   const updated: Proxy = { ...existing, ...updates };
-  const fields = Object.keys(updates) as Array<keyof typeof updates>;
+  const PROXY_COLUMNS = new Set(['host', 'port', 'username', 'password', 'protocol', 'country', 'isActive']);
+  const fields = (Object.keys(updates) as Array<keyof typeof updates>).filter((k) => PROXY_COLUMNS.has(k));
   if (fields.length === 0) return updated;
 
   const setClause = fields.map((f) => `${f} = ?`).join(', ');
@@ -816,8 +827,8 @@ function updateCampaign(id: string, updates: Partial<Campaign>): Campaign | unde
   if (!campaign) return undefined;
 
   const updated: Campaign = { ...campaign, ...updates, updatedAt: Date.now() };
-  const excluded = new Set(['id', 'createdAt']);
-  const fields = Object.keys(updates).filter((k) => !excluded.has(k));
+  const CAMPAIGN_COLUMNS = new Set(['name', 'type', 'status', 'config', 'completedAt']);
+  const fields = Object.keys(updates).filter((k) => CAMPAIGN_COLUMNS.has(k));
 
   if (fields.length === 0) return updated;
 
@@ -937,8 +948,8 @@ function updateParkedAsset(
   if (!asset) return undefined;
 
   const updated: ParkedAsset = { ...asset, ...updates };
-  const excluded = new Set(['id', 'createdAt']);
-  const fields = Object.keys(updates).filter((k) => !excluded.has(k));
+  const PARKED_ASSET_COLUMNS = new Set(['type', 'assetId', 'assetName', 'creatorSessionId', 'parkingSessionId', 'transferStatus', 'transferredAt']);
+  const fields = Object.keys(updates).filter((k) => PARKED_ASSET_COLUMNS.has(k));
 
   if (fields.length === 0) return updated;
 
