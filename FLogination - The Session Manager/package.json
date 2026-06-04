@@ -1,0 +1,114 @@
+{
+  "name": "flogination-session-manager",
+  "version": "5.0.0",
+  "description": "Elite Facebook Session Management System with Agent Bridge",
+  "private": true,
+  "main": "electron-dist/main.js",
+  "scripts": {
+    "backup": "tsx scripts/backup-db.ts",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "kill-ports": "powershell -Command \"Stop-Process -Id (Get-NetTCPConnection -LocalPort 3000,3001 -ErrorAction SilentlyContinue).OwningProcess -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1\"",
+    "dev:server": "tsx watch src/server/index.ts",
+    "dev:client": "next dev Flogination/flogination-web",
+    "electron:dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "npm run build && tsc -p tsconfig.electron.json && electron-builder --win portable",
+    "electron:pack": "electron-builder --win portable --dir",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "next build Flogination/flogination-web",
+    "build:server": "tsc -p tsconfig.server.json",
+    "start": "NODE_ENV=production node dist/server/index.js",
+    "lint": "next lint Flogination/flogination-web"
+  },
+  "build": {
+    "appId": "com.flogination.app",
+    "productName": "Flogination",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron-dist/**/*",
+      "dist/**/*",
+      "Flogination/flogination-web/.next/standalone/**/*",
+      "Flogination/flogination-web/.next/static/**/*",
+      "Flogination/flogination-web/public/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/cloakbrowser",
+        "to": "cloakbrowser",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "Flogination-portable.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^12.6.2",
+    "body-parser": "^1.20.0",
+    "cloakbrowser": "^0.3.30",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "electron-store": "^8.2.0",
+    "express": "^4.18.0",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "multer": "^2.0.1",
+    "next": "^14.2.0",
+    "otplib": "^13.4.0",
+    "playwright": "^1.42.0",
+    "playwright-core": "^1.42.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/cors": "^2.8.0",
+    "@types/express": "^4.17.0",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^9.0.0",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^8.2.0",
+    "electron": "^33.4.0",
+    "electron-builder": "^26.0.12",
+    "fast-check": "^4.8.0",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "ts-jest": "^29.4.11",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "wait-on": "^7.2.0"
+  }
+}
