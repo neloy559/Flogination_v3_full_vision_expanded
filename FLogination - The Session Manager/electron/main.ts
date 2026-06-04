@@ -16,6 +16,7 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import { spawn, ChildProcess } from 'child_process';
 import fs from 'fs';
+import { autoUpdater } from 'electron-updater';
 
 // ─────────────────────────────────────────────
 // CONSTANTS
@@ -264,6 +265,7 @@ function createWindow(): void {
  * Channels:
  *  - `get-version` → returns the app version string from package.json
  *  - `open-external` → opens a URL in the system browser
+ *  - `check-for-updates` → manually trigger update check
  *
  * @example
  * registerIpcHandlers(); // call once before creating the window
@@ -277,6 +279,113 @@ function registerIpcHandlers(): void {
       return shell.openExternal(url);
     }
   });
+
+  ipcMain.handle('check-for-updates', () => {
+    if (app.isPackaged) {
+      autoUpdater.checkForUpdates();
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+// VERSION GATE (GitHub Gist)
+// ─────────────────────────────────────────────
+
+/**
+ * Checks a public GitHub Gist for version gate config.
+ * If the current version is below minVersion or allowed=false,
+ * returns a message to show the user and optionally blocks startup.
+ *
+ * Gist URL: https://gist.githubusercontent.com/neloy559/[GIST_ID]/raw/flogination-version.json
+ * Gist format: { "minVersion": "0.1.0", "allowed": true, "message": "", "demoExpired": false }
+ *
+ * Fails open — if the Gist is unreachable, the app starts normally.
+ */
+const GIST_URL = 'https://gist.githubusercontent.com/neloy559/flogination-version-gate/raw/flogination-version.json';
+
+interface VersionGateConfig {
+  minVersion: string;
+  allowed: boolean;
+  message: string;
+  demoExpired: boolean;
+}
+
+function compareVersions(a: string, b: string): number {
+  const pa = a.split('.').map(Number);
+  const pb = b.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    if ((pa[i] ?? 0) > (pb[i] ?? 0)) return 1;
+    if ((pa[i] ?? 0) < (pb[i] ?? 0)) return -1;
+  }
+  return 0;
+}
+
+async function checkVersionGate(): Promise<{ blocked: boolean; message: string }> {
+  try {
+    const res = await fetch(GIST_URL, { signal: AbortSignal.timeout(5_000) });
+    if (!res.ok) return { blocked: false, message: '' };
+
+    const config = await res.json() as VersionGateConfig;
+    const currentVersion = app.getVersion();
+
+    if (!config.allowed) {
+      return { blocked: true, message: config.message || 'This version has been disabled. Please download the latest version.' };
+    }
+
+    if (config.demoExpired) {
+      return { blocked: true, message: config.message || 'The demo period has ended. Please upgrade to the full version.' };
+    }
+
+    if (config.minVersion && compareVersions(currentVersion, config.minVersion) < 0) {
+      return {
+        blocked: true,
+        message: config.message || `Version ${currentVersion} is no longer supported. Please update to v${config.minVersion} or later.`,
+      };
+    }
+
+    return { blocked: false, message: '' };
+  } catch {
+    // Gist unreachable — fail open, app starts normally
+    return { blocked: false, message: '' };
+  }
+}
+
+// ─────────────────────────────────────────────
+// AUTO-UPDATER SETUP
+// ─────────────────────────────────────────────
+
+/**
+ * Configures electron-updater to check GitHub Releases for new versions.
+ * Shows a notification in the renderer when an update is available.
+ * Downloads silently and installs on next restart.
+ */
+function setupAutoUpdater(): void {
+  if (!app.isPackaged) return;
+
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('update-available', (info) => {
+    mainWindow?.webContents.send('update-available', {
+      version: info.version,
+      releaseNotes: info.releaseNotes,
+    });
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    mainWindow?.webContents.send('update-downloaded');
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('[updater] error:', err.message);
+  });
+
+  // Check 3 seconds after startup to avoid blocking app launch
+  setTimeout(() => {
+    autoUpdater.checkForUpdates().catch((err) => {
+      console.error('[updater] check failed:', err.message);
+    });
+  }, 3_000);
 }
 
 // ─────────────────────────────────────────────
@@ -288,6 +397,7 @@ app.whenReady().then(async () => {
   fs.mkdirSync(path.join(DATA_DIR, 'user-data'), { recursive: true });
 
   registerIpcHandlers();
+  setupAutoUpdater();
   startApiServer();
   startUiServer();
 
@@ -300,6 +410,14 @@ app.whenReady().then(async () => {
   }
 
   createWindow();
+
+  // Check version gate after window is created so we can show a message if blocked
+  const gate = await checkVersionGate();
+  if (gate.blocked) {
+    mainWindow?.webContents.once('did-finish-load', () => {
+      mainWindow?.webContents.send('version-blocked', { message: gate.message });
+    });
+  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

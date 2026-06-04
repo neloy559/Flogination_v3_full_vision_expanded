@@ -6,34 +6,55 @@
  *
  * The dashboard communicates with the Express API via HTTP fetch for all
  * business logic. This bridge only handles Electron-specific concerns:
- * app version and opening external URLs in the system browser.
+ * app version, external URLs, update notifications, and version gate.
  */
 
 import { contextBridge, ipcRenderer } from 'electron';
 
 /**
- * Minimal Electron API surface exposed to the renderer.
+ * Electron API surface exposed to the renderer.
  * Accessible as `window.electronAPI` in the Next.js dashboard.
  */
 contextBridge.exposeInMainWorld('electronAPI', {
   /**
    * Returns the app version string from package.json.
-   *
-   * @returns Promise resolving to the version string, e.g. "5.0.0"
-   *
    * @example
-   * const version = await window.electronAPI.getVersion(); // "5.0.0"
+   * const version = await window.electronAPI.getVersion(); // "0.1.0"
    */
   getVersion: (): Promise<string> => ipcRenderer.invoke('get-version'),
 
   /**
    * Opens a URL in the user's default system browser.
    * Only http/https URLs are allowed.
-   *
-   * @param url - The URL to open externally
-   *
-   * @example
-   * await window.electronAPI.openExternal('https://facebook.com');
    */
   openExternal: (url: string): Promise<void> => ipcRenderer.invoke('open-external', url),
+
+  /**
+   * Manually triggers an update check against GitHub Releases.
+   */
+  checkForUpdates: (): Promise<void> => ipcRenderer.invoke('check-for-updates'),
+
+  /**
+   * Registers a callback for when an update is available.
+   * Payload: { version: string, releaseNotes: string }
+   */
+  onUpdateAvailable: (callback: (info: { version: string; releaseNotes: string }) => void): void => {
+    ipcRenderer.on('update-available', (_event, info) => callback(info));
+  },
+
+  /**
+   * Registers a callback for when an update has been downloaded and is
+   * ready to install on next restart.
+   */
+  onUpdateDownloaded: (callback: () => void): void => {
+    ipcRenderer.on('update-downloaded', () => callback());
+  },
+
+  /**
+   * Registers a callback for when the version gate blocks this version.
+   * Payload: { message: string }
+   */
+  onVersionBlocked: (callback: (info: { message: string }) => void): void => {
+    ipcRenderer.on('version-blocked', (_event, info) => callback(info));
+  },
 });

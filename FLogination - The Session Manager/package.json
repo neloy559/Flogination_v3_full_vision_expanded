@@ -1,6 +1,6 @@
 {
   "name": "flogination-session-manager",
-  "version": "5.0.0",
+  "version": "0.1.0",
   "description": "Elite Facebook Session Management System with Agent Bridge",
   "private": true,
   "main": "electron-dist/main.js",
@@ -22,6 +22,11 @@
   "build": {
     "appId": "com.flogination.app",
     "productName": "Flogination",
+    "publish": {
+      "provider": "github",
+      "owner": "neloy559",
+      "repo": "Flogination_v3_full_vision_expanded"
+    },
     "directories": {
       "output": "dist-electron"
     },
@@ -70,6 +75,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.0",
     "electron-store": "^8.2.0",
+    "electron-updater": "6.3.9",
     "express": "^4.18.0",
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
@@ -83,6 +89,7 @@
     "react-dom": "^18.2.0",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5",
+    "zod": "3.23.8",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
