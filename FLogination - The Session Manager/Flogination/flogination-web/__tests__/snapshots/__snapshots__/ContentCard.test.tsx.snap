@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ContentCard — snapshot regression baseline PADDING_MAP snapshot — all three variants 1`] = `
+{
+  "lg": "p-8",
+  "md": "p-5",
+  "sm": "p-3",
+}
+`;
+
+exports[`ContentCard — snapshot regression baseline default variant (md padding, no hover) 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-5"`;
+
+exports[`ContentCard — snapshot regression baseline hover=true variant 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-5 transition-shadow hover:shadow-md"`;
+
+exports[`ContentCard — snapshot regression baseline lg padding + hover 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-8 transition-shadow hover:shadow-md"`;
+
+exports[`ContentCard — snapshot regression baseline lg padding variant 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-8"`;
+
+exports[`ContentCard — snapshot regression baseline sm padding + hover 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-3 transition-shadow hover:shadow-md"`;
+
+exports[`ContentCard — snapshot regression baseline sm padding variant 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-3"`;
+
+exports[`ContentCard — snapshot regression baseline with extra className 1`] = `"bg-surface-container-lowest border border-outline-variant rounded-card shadow-card p-5  mb-6 col-span-2"`;

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ToggleSwitch — snapshot regression baseline checked, disabled, no label 1`] = `
+{
+  "hasLabel": false,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none opacity-50 cursor-not-allowed",
+  "labelText": null,
+  "spanClass": "toggle-switch checked",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline checked, enabled, no label 1`] = `
+{
+  "hasLabel": false,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none",
+  "labelText": null,
+  "spanClass": "toggle-switch checked",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline checked, enabled, with label 1`] = `
+{
+  "hasLabel": true,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none",
+  "labelText": "Enable feature",
+  "spanClass": "toggle-switch checked",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline disabled, with label 1`] = `
+{
+  "hasLabel": true,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none opacity-50 cursor-not-allowed",
+  "labelText": "Disabled option",
+  "spanClass": "toggle-switch",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline label class — disabled snapshot 1`] = `"inline-flex items-center gap-2 cursor-pointer select-none opacity-50 cursor-not-allowed"`;
+
+exports[`ToggleSwitch — snapshot regression baseline label class — enabled snapshot 1`] = `"inline-flex items-center gap-2 cursor-pointer select-none"`;
+
+exports[`ToggleSwitch — snapshot regression baseline toggle span class — checked snapshot 1`] = `"toggle-switch checked"`;
+
+exports[`ToggleSwitch — snapshot regression baseline toggle span class — unchecked snapshot 1`] = `"toggle-switch"`;
+
+exports[`ToggleSwitch — snapshot regression baseline unchecked, disabled, no label 1`] = `
+{
+  "hasLabel": false,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none opacity-50 cursor-not-allowed",
+  "labelText": null,
+  "spanClass": "toggle-switch",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline unchecked, enabled, no label 1`] = `
+{
+  "hasLabel": false,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none",
+  "labelText": null,
+  "spanClass": "toggle-switch",
+}
+`;
+
+exports[`ToggleSwitch — snapshot regression baseline unchecked, enabled, with label 1`] = `
+{
+  "hasLabel": true,
+  "labelClass": "inline-flex items-center gap-2 cursor-pointer select-none",
+  "labelText": "Enable feature",
+  "spanClass": "toggle-switch",
+}
+`;

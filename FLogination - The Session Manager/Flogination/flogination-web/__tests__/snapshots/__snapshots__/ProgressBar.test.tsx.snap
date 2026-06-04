@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProgressBar — color class values snapshot all three color class strings snapshot 1`] = `
+{
+  "green": "bg-[#00b894]",
+  "orange": "bg-[#fdcb6e]",
+  "red": "bg-[#e17055]",
+}
+`;
+
+exports[`ProgressBar — color class values snapshot boundary mapping snapshot (64, 65, 84, 85) 1`] = `
+{
+  "p64": "bg-[#00b894]",
+  "p65": "bg-[#fdcb6e]",
+  "p84": "bg-[#fdcb6e]",
+  "p85": "bg-[#e17055]",
+}
+`;
+
+exports[`ProgressBar — color class values snapshot full range snapshot (0, 50, 64, 65, 84, 85, 100) 1`] = `
+{
+  "p0": "bg-[#00b894]",
+  "p100": "bg-[#e17055]",
+  "p50": "bg-[#00b894]",
+  "p64": "bg-[#00b894]",
+  "p65": "bg-[#fdcb6e]",
+  "p84": "bg-[#fdcb6e]",
+  "p85": "bg-[#e17055]",
+}
+`;
+
+exports[`ProgressBar — snapshot regression baseline value 0 → green 1`] = `"bg-[#00b894]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 50 → green 1`] = `"bg-[#00b894]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 64 → green (last green value) 1`] = `"bg-[#00b894]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 65 → orange (first orange value) 1`] = `"bg-[#fdcb6e]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 84 → orange (last orange value) 1`] = `"bg-[#fdcb6e]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 85 → red (first red value) 1`] = `"bg-[#e17055]"`;
+
+exports[`ProgressBar — snapshot regression baseline value 100 → red 1`] = `"bg-[#e17055]"`;

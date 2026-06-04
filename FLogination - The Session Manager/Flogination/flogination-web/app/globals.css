@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Material Symbols ─────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+.icon-fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ── Base — Light Theme ───────────────────────────────────── */
+html, body {
+  background-color: #f0f2f7;
+  color: #1a1a2e;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar — Light Theme ──────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #e8ecf0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Dense table rows ─────────────────────────────────────── */
+.dense-table th,
+.dense-table td {
+  height: 28px;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Smooth transitions ───────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+.animate-pulse-dot { animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 2s linear infinite; }
+
+/* ── Ghost border (focus ring) ────────────────────────────── */
+.ghost-border { border: 1px solid #c8c4d7; transition: border-color 0.15s; }
+.ghost-border:focus-within { border-color: #5341cd; outline: none; }
+
+/* ── IDE-style input — Light Theme ───────────────────────── */
+.ide-input {
+  background-color: #ffffff;
+  border: 1px solid #c8c4d7;
+  color: #1a1a2e;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ide-input:focus {
+  outline: none;
+  border-color: #5341cd;
+  box-shadow: 0 0 0 2px rgba(83, 65, 205, 0.12);
+}
+
+/* ── Toggle Switch ────────────────────────────────────────── */
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  border-radius: 20px;
+  background: #e8ecf0;
+  transition: background 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.toggle-switch.checked { background: #6c5ce7; }
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.toggle-switch.checked::after { transform: translateX(20px); }
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(83, 65, 205, 0.2);
+  color: #1a1a2e;
+}
+
+/* ── Smooth view transitions ──────────────────────────────── */
+.view-enter {
+  animation: fadeSlideIn 0.18s ease-out;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Kiro-style card rows (lightweight, no shadow) ────────── */
+.card-row {
+  background: #ffffff;
+  border: 1px solid #e8e5ff;
+  border-radius: 10px;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  margin-bottom: 4px;
+}
+.card-row:hover {
+  border-color: #c8c4d7;
+  background: #faf9ff;
+  box-shadow: 0 1px 4px rgba(83, 65, 205, 0.06);
+}
+.card-row.selected {
+  border-color: #5341cd;
+  background: rgba(83, 65, 205, 0.04);
+  border-left: 3px solid #5341cd;
+}
+
+/* ── Sidebar nav pill (Kiro-style active) ─────────────────── */
+.nav-pill-active {
+  background: rgba(83, 65, 205, 0.08);
+  color: #5341cd;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.nav-pill-hover:hover {
+  background: rgba(83, 65, 205, 0.05);
+  border-radius: 8px;
+}
+
+/* ── Floating card (elevated panels) ─────────────────────── */
+.floating-card {
+  background: #ffffff;
+  border: 1px solid #e8e5ff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(83, 65, 205, 0.06), 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* ── Input focus ring ─────────────────────────────────────── */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
+
+/* ── Button press effect ──────────────────────────────────── */
+button:active:not(:disabled) {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}

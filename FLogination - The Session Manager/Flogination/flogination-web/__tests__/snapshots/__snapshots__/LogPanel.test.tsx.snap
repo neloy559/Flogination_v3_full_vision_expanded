@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`LogPanel — getLogLevelColor snapshot regression baseline all three levels — combined snapshot 1`] = `
+{
+  "error": "text-error",
+  "info": "text-primary-fixed",
+  "success": "text-secondary-container",
+}
+`;
+
+exports[`LogPanel — getLogLevelColor snapshot regression baseline error level → color class snapshot 1`] = `"text-error"`;
+
+exports[`LogPanel — getLogLevelColor snapshot regression baseline info level → color class snapshot 1`] = `"text-primary-fixed"`;
+
+exports[`LogPanel — getLogLevelColor snapshot regression baseline success level → color class snapshot 1`] = `"text-secondary-container"`;
+
+exports[`LogPanel — log entry structure snapshots all three log levels with entries snapshot 1`] = `
+[
+  {
+    "colorClass": "text-secondary-container",
+    "id": "entry-1",
+    "level": "success",
+  },
+  {
+    "colorClass": "text-primary-fixed",
+    "id": "entry-2",
+    "level": "info",
+  },
+  {
+    "colorClass": "text-error",
+    "id": "entry-3",
+    "level": "error",
+  },
+]
+`;
+
+exports[`LogPanel — log entry structure snapshots empty entries state snapshot 1`] = `
+{
+  "count": 0,
+  "emptyMessage": "No log entries",
+  "isEmpty": true,
+}
+`;
+
+exports[`LogPanel — log entry structure snapshots error entry structure snapshot 1`] = `
+{
+  "colorClass": "text-error",
+  "id": "entry-3",
+  "level": "error",
+  "message": "Failed to connect to proxy",
+  "timestamp": 1700000002000,
+}
+`;
+
+exports[`LogPanel — log entry structure snapshots info entry structure snapshot 1`] = `
+{
+  "colorClass": "text-primary-fixed",
+  "id": "entry-2",
+  "level": "info",
+  "message": "Scraping profile data...",
+  "timestamp": 1700000001000,
+}
+`;
+
+exports[`LogPanel — log entry structure snapshots success entry structure snapshot 1`] = `
+{
+  "colorClass": "text-secondary-container",
+  "id": "entry-1",
+  "level": "success",
+  "message": "Session launched successfully",
+  "timestamp": 1700000000000,
+}
+`;

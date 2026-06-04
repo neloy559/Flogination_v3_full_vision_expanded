@@ -1,0 +1,243 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`StatusBadge — full style descriptor snapshots per status group checkpoint — unique orange hex style 1`] = `
+{
+  "bg": "#fdcb6e15",
+  "prefix": "dot",
+  "text": "#fdcb6e",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — full style descriptor snapshots per status group gray group (dead, draft, idle) — all return identical style 1`] = `
+{
+  "dead": {
+    "bg": "#63636e15",
+    "prefix": "dot",
+    "text": "#636e72",
+    "useInlineStyle": true,
+  },
+  "draft": {
+    "bg": "#63636e15",
+    "prefix": "dot",
+    "text": "#636e72",
+    "useInlineStyle": true,
+  },
+  "idle": {
+    "bg": "#63636e15",
+    "prefix": "dot",
+    "text": "#636e72",
+    "useInlineStyle": true,
+  },
+}
+`;
+
+exports[`StatusBadge — full style descriptor snapshots per status group green group (live, active, complete) — all return identical style 1`] = `
+{
+  "active": {
+    "bg": "#00b89415",
+    "prefix": "dot",
+    "text": "#00b894",
+    "useInlineStyle": true,
+  },
+  "complete": {
+    "bg": "#00b89415",
+    "prefix": "dot",
+    "text": "#00b894",
+    "useInlineStyle": true,
+  },
+  "live": {
+    "bg": "#00b89415",
+    "prefix": "dot",
+    "text": "#00b894",
+    "useInlineStyle": true,
+  },
+}
+`;
+
+exports[`StatusBadge — full style descriptor snapshots per status group paused — unique Tailwind class style 1`] = `
+{
+  "bg": "bg-orange-100",
+  "prefix": "pause",
+  "text": "text-orange-700",
+  "useInlineStyle": false,
+}
+`;
+
+exports[`StatusBadge — full style descriptor snapshots per status group purple/spin group (running, creating, transferring, verifying) — all return identical style 1`] = `
+{
+  "creating": {
+    "bg": "#5341cd15",
+    "prefix": "spin",
+    "text": "#5341cd",
+    "useInlineStyle": true,
+  },
+  "running": {
+    "bg": "#5341cd15",
+    "prefix": "spin",
+    "text": "#5341cd",
+    "useInlineStyle": true,
+  },
+  "transferring": {
+    "bg": "#5341cd15",
+    "prefix": "spin",
+    "text": "#5341cd",
+    "useInlineStyle": true,
+  },
+  "verifying": {
+    "bg": "#5341cd15",
+    "prefix": "spin",
+    "text": "#5341cd",
+    "useInlineStyle": true,
+  },
+}
+`;
+
+exports[`StatusBadge — full style descriptor snapshots per status group red group (restricted, failed) — all return identical style 1`] = `
+{
+  "failed": {
+    "bg": "#e1705515",
+    "prefix": "dot",
+    "text": "#e17055",
+    "useInlineStyle": true,
+  },
+  "restricted": {
+    "bg": "#e1705515",
+    "prefix": "dot",
+    "text": "#e17055",
+    "useInlineStyle": true,
+  },
+}
+`;
+
+exports[`StatusBadge — size class snapshots default (no arg) size classes snapshot 1`] = `"text-label-sm px-[10px] py-[3px]"`;
+
+exports[`StatusBadge — size class snapshots md size classes snapshot (default) 1`] = `"text-label-sm px-[10px] py-[3px]"`;
+
+exports[`StatusBadge — size class snapshots sm size classes snapshot 1`] = `"text-[11px] px-[8px] py-[2px]"`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("active") snapshot 1`] = `
+{
+  "bg": "#00b89415",
+  "prefix": "dot",
+  "text": "#00b894",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("checkpoint") snapshot 1`] = `
+{
+  "bg": "#fdcb6e15",
+  "prefix": "dot",
+  "text": "#fdcb6e",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("complete") snapshot 1`] = `
+{
+  "bg": "#00b89415",
+  "prefix": "dot",
+  "text": "#00b894",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("creating") snapshot 1`] = `
+{
+  "bg": "#5341cd15",
+  "prefix": "spin",
+  "text": "#5341cd",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("dead") snapshot 1`] = `
+{
+  "bg": "#63636e15",
+  "prefix": "dot",
+  "text": "#636e72",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("draft") snapshot 1`] = `
+{
+  "bg": "#63636e15",
+  "prefix": "dot",
+  "text": "#636e72",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("failed") snapshot 1`] = `
+{
+  "bg": "#e1705515",
+  "prefix": "dot",
+  "text": "#e17055",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("idle") snapshot 1`] = `
+{
+  "bg": "#63636e15",
+  "prefix": "dot",
+  "text": "#636e72",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("live") snapshot 1`] = `
+{
+  "bg": "#00b89415",
+  "prefix": "dot",
+  "text": "#00b894",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("paused") snapshot 1`] = `
+{
+  "bg": "bg-orange-100",
+  "prefix": "pause",
+  "text": "text-orange-700",
+  "useInlineStyle": false,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("restricted") snapshot 1`] = `
+{
+  "bg": "#e1705515",
+  "prefix": "dot",
+  "text": "#e17055",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("running") snapshot 1`] = `
+{
+  "bg": "#5341cd15",
+  "prefix": "spin",
+  "text": "#5341cd",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("transferring") snapshot 1`] = `
+{
+  "bg": "#5341cd15",
+  "prefix": "spin",
+  "text": "#5341cd",
+  "useInlineStyle": true,
+}
+`;
+
+exports[`StatusBadge — snapshot regression baseline (all 14 status values) getStatusBadgeStyle("verifying") snapshot 1`] = `
+{
+  "bg": "#5341cd15",
+  "prefix": "spin",
+  "text": "#5341cd",
+  "useInlineStyle": true,
+}
+`;
