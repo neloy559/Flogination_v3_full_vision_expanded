@@ -57,3 +57,11 @@ node_modules/
 
 # GitNexus index (local only)
 /.gitnexus/parse-cache/
+
+# AI agent context files — private, not for public repo
+/AGENTS.md
+/CLAUDE.md
+/.claude/
+/FLogination - The Session Manager/SESSION_HANDOFF.md
+/FLogination - The Session Manager/plan.txt
+/FLogination - The Session Manager/_docs/
