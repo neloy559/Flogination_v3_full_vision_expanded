@@ -272,7 +272,7 @@ async function executePageCreationTask(
     });
 
     // Fire webhook
-    await webhookService.fireAssetParked({
+    await webhookService.fire('asset-parked', {
       assetId: pageId,
       assetName: pageName,
       type: 'page',

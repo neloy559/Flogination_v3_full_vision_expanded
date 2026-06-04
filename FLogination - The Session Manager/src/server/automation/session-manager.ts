@@ -353,7 +353,7 @@ function updateHealthStatus(
     if (newStatus === 'checkpoint' || newStatus === 'dead') {
       const session = db_.getSessionById(sessionId);
       if (session) {
-        webhookService.fireSessionAlert({
+        webhookService.fire('session-alert', {
           sessionId,
           uid: session.uid,
           fbName: session.fbName,

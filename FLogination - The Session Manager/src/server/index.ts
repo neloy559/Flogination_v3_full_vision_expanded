@@ -1169,8 +1169,13 @@ app.post('/api/webhooks/test', asyncRoute(async (req, res) => {
   if (!n8nBaseUrl) {
     return res.status(400).json({ success: false, error: 'n8nBaseUrl is required' });
   }
-  const result = await webhookService.fireTest(n8nBaseUrl);
-  res.json(result);
+  try {
+    await webhookService.fire('test', { timestamp: Date.now(), source: 'settings-test' });
+    res.json({ success: true });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.json({ success: false, error: message });
+  }
 }));
 
 // ─────────────────────────────────────────────

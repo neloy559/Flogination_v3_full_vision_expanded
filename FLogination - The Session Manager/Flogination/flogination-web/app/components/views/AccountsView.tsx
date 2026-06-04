@@ -431,7 +431,7 @@ function AddSessionModal({ onClose }: { onClose: () => void }) {
       }
       setLoading(false);
       if (failed > 0) {
-        const uniqueErrors = [...new Set(errors)];
+        const uniqueErrors = Array.from(new Set(errors));
         setError(`${failed} of ${entries.length} cookies failed${uniqueErrors.length ? ': ' + uniqueErrors[0] : ''}`);
       } else {
         onClose();

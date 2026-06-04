@@ -137,7 +137,7 @@ async function start(
   const sessionCount = new Set(tasks.map((t) => t.sessionId)).size;
 
   // Fire campaign-started webhook
-  await webhookService.fireCampaignStarted({
+  await webhookService.fire('campaign-started', {
     campaignId,
     campaignName: campaign.name,
     type: campaign.type,
@@ -249,7 +249,7 @@ async function completeCampaign(campaignId: string): Promise<void> {
 
   const progress = getProgress(campaignId);
 
-  await webhookService.fireCampaignFinished({
+  await webhookService.fire('campaign-finished', {
     campaignId,
     campaignName: campaign.name,
     type: campaign.type,
@@ -325,7 +325,7 @@ async function cancel(campaignId: string): Promise<{ success: boolean; error?: s
   }
 
   const progress = getProgress(campaignId);
-  await webhookService.fireCampaignFinished({
+  await webhookService.fire('campaign-finished', {
     campaignId,
     campaignName: campaign.name,
     type: campaign.type,

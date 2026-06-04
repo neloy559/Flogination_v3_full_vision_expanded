@@ -274,7 +274,7 @@ async function executeBMCreationTask(
     updateParkingSessionBMData(config.parkingSessionId, bmId, bmName);
 
     // Fire webhook
-    await webhookService.fireAssetParked({
+    await webhookService.fire('asset-parked', {
       assetId: bmId,
       assetName: bmName,
       type: 'bm',
