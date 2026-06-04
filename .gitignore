@@ -32,5 +32,18 @@ node_modules/
 /FLogination - The Session Manager/test-screenshots/
 /FLogination - The Session Manager/test-report.md
 
+# Browser user data (runtime generated, contains sensitive session data)
+/FLogination - The Session Manager/user-data/
+
+# Electron compiled output
+/FLogination - The Session Manager/electron-dist/
+
+# Excel/spreadsheet session exports
+/FLogination - The Session Manager/sessions.xlsx
+
+# WAL files (SQLite runtime)
+/FLogination - The Session Manager/*.db-shm
+/FLogination - The Session Manager/*.db-wal
+
 # GitNexus index (local only)
 /.gitnexus/parse-cache/
