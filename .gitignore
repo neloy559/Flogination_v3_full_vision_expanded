@@ -3,21 +3,32 @@
 /.vscode
 
 # Build artifacts — never commit these
+/flogination-app/dist/
+/flogination-app/dist-electron/
+/flogination-app/electron-dist/
+/flogination-app/Flogination/flogination-web/.next/
+
+# Old path (pre-rename) — keep for safety
 /FLogination - The Session Manager/dist/
 /FLogination - The Session Manager/dist-electron/
-/Flogination/flogination-web/.next/
-/FLogination - The Session Manager/Flogination/flogination-web/.next/
+/FLogination - The Session Manager/electron-dist/
 
 # Dependencies — always reinstallable
+/flogination-app/node_modules/
+/flogination-app/Flogination/flogination-web/node_modules/
 /FLogination - The Session Manager/node_modules/
-/Flogination/flogination-web/node_modules/
 node_modules/
 
 # Database & user data
+/flogination-app/flogination.db
+/flogination-app/backups/*.db
+/flogination-app/user-data/
 /FLogination - The Session Manager/flogination.db
 /FLogination - The Session Manager/backups/*.db
+/FLogination - The Session Manager/user-data/
 
 # Sensitive environment files
+/flogination-app/.env
 /FLogination - The Session Manager/.env
 
 # Large binary/exe files
@@ -30,19 +41,17 @@ node_modules/
 /stitch_flogination_dashboard_ui.zip
 
 # Test artifacts
+/flogination-app/test-screenshots/
+/flogination-app/test-report.md
 /FLogination - The Session Manager/test-screenshots/
 /FLogination - The Session Manager/test-report.md
 
-# Browser user data (runtime generated, contains sensitive session data)
-/FLogination - The Session Manager/user-data/
-
-# Electron compiled output
-/FLogination - The Session Manager/electron-dist/
-
 # Excel/spreadsheet session exports
-/FLogination - The Session Manager/sessions.xlsx
+/flogination-app/sessions.xlsx
 
 # WAL files (SQLite runtime)
+/flogination-app/*.db-shm
+/flogination-app/*.db-wal
 /FLogination - The Session Manager/*.db-shm
 /FLogination - The Session Manager/*.db-wal
 
