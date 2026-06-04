@@ -301,7 +301,7 @@ function registerIpcHandlers(): void {
  *
  * Fails open — if the Gist is unreachable, the app starts normally.
  */
-const GIST_URL = 'https://gist.githubusercontent.com/neloy559/flogination-version-gate/raw/flogination-version.json';
+const GIST_URL = 'https://gist.githubusercontent.com/neloy559/db0cf2a709a2f60807fcd0b46da007df/raw/flogination-version.json';
 
 interface VersionGateConfig {
   minVersion: string;
