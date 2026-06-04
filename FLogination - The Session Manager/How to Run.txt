@@ -1,0 +1,9 @@
+# Development (API + UI)
+npx tsx src/server/index.ts        # API on :3001
+npx next dev Flogination/flogination-web  # UI on :3000
+
+# Backup database
+npm run backup
+
+# Build portable EXE (after setting up assets/icon.ico)
+npm run electron:build
